@@ -8,17 +8,11 @@ import 'package:restoo/widgets/rating_star.dart';
 class RestaurantList extends StatelessWidget {
   final BuildContext context;
   final Restaurant restaurant;
-  final Menus menus;
-  final List<Food> food;
-  final List<Drink> drink;
 
   const RestaurantList({
     Key? key,
     required this.context,
     required this.restaurant,
-    required this.menus,
-    required this.food,
-    required this.drink,
   }) : super(key: key);
 
   @override
@@ -40,7 +34,7 @@ class RestaurantList extends StatelessWidget {
               child: CachedNetworkImage(
                 width: 60,
                 height: 60,
-                imageUrl: restaurant.pictureId,
+                imageUrl: "https://restaurant-api.dicoding.dev/images/small/" + restaurant.pictureId,
                 imageBuilder: (context, imageProvider) => Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:restoo/data/models/restaurant.dart';
 import 'package:restoo/pages/detail_page.dart';
 import 'package:restoo/pages/home_page.dart';
+import 'package:restoo/pages/search_page.dart';
 import 'package:restoo/pages/welcome_page.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         WelcomePage.routeName: (context) => WelcomePage(),
         HomePage.routeName: (context) => HomePage(),
+        SearchPage.routeName: (context) => SearchPage(),
         DetailPage.routeName: (context) => DetailPage(
               restaurant:
                   ModalRoute.of(context)?.settings.arguments as Restaurant,
