@@ -60,10 +60,13 @@ class WelcomePage extends StatelessWidget {
                           ),
                         );
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: const Text('Periksa koneksi internet Anda!'),
-                          duration: const Duration(seconds: 1),
-                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                const Text('Periksa koneksi internet Anda!'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(

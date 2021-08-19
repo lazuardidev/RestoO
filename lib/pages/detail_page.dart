@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:restoo/common/styles.dart';
 import 'package:restoo/data/models/restaurant.dart';
 import 'package:restoo/main.dart';
+import 'package:restoo/pages/home_page.dart';
 import 'package:restoo/provider/restaurant_provider.dart';
 import 'package:restoo/widgets/rating_star.dart';
 import 'package:restoo/widgets/review_list.dart';
@@ -37,8 +38,6 @@ class _DetailPageState extends State<DetailPage> {
   List<String> drinkList = [];
   List<CustomerReview> listCustomerReviews = [];
 
-  bool isFavorite = false;
-
   @override
   void dispose() {
     super.dispose();
@@ -47,13 +46,34 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: whiteColor,
-      body: (MyApp.isConnect == true)
-          ? _buildDetailPage(context)
-          : Center(
-              child: Image.asset('assets/vector/no_connection.jpg'),
-            ),
+    return Consumer<RestaurantProvider>(
+      builder: (context, state, _) => WillPopScope(
+        onWillPop: () async {
+          if (MyApp.isConnect) {
+            state.searchRestaurantProvider(query: '');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('Periksa koneksi internet Anda!'),
+              duration: const Duration(seconds: 1),
+            ));
+          }
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: whiteColor,
+          body: (MyApp.isConnect == true)
+              ? _buildDetailPage(context)
+              : Center(
+                  child: Image.asset('assets/vector/no_connection.jpg'),
+                ),
+        ),
+      ),
     );
   }
 
