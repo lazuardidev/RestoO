@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restoo/common/styles.dart';
+import 'package:restoo/main.dart';
 import 'package:restoo/pages/home_page.dart';
+import 'package:restoo/provider/restaurant_provider.dart';
 
 class WelcomePage extends StatelessWidget {
   static const routeName = '/welcome_page';
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,32 +44,42 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: 70,
             ),
-            Container(
-              width: 210,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
+            Consumer<RestaurantProvider>(builder: (context, state, _) {
+              return Container(
+                width: 210,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (MyApp.isConnect) {
+                      state.searchRestaurantProvider(query: '');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: const Text('Periksa koneksi internet Anda!'),
+                        duration: const Duration(seconds: 1),
+                      ));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: greenColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: greenColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    'Explore Resto',
+                    style: whiteTextStyle.copyWith(
+                      fontSize: 18,
+                    ),
                   ),
                 ),
-                child: Text(
-                  'Explore Resto',
-                  style: whiteTextStyle.copyWith(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),

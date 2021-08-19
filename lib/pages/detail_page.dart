@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:restoo/common/styles.dart';
 import 'package:restoo/data/api/api_service.dart';
 import 'package:restoo/data/models/restaurant.dart';
+import 'package:restoo/main.dart';
 import 'package:restoo/widgets/rating_star.dart';
 import 'package:restoo/widgets/review_list.dart';
 
@@ -50,7 +52,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    if (HomePage.isConnect == true) {
+    if (MyApp.isConnect == true) {
       _restaurantApi = ApiService().restaurantDetail(id: widget.restaurant.id);
     }
   }
@@ -59,7 +61,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteColor,
-      body: (HomePage.isConnect == true)
+      body: (MyApp.isConnect == true)
           ? _buildDetailPage(context)
           : Container(
               child: Image.asset('assets/vector/no_connection.jpg'),
@@ -135,7 +137,8 @@ class _DetailPageState extends State<DetailPage> {
         var state = snapshot.connectionState;
         if (state != ConnectionState.done) {
           return Center(
-            child: CircularProgressIndicator(),
+            // child: CircularProgressIndicator(),
+            child: LottieBuilder.asset('assets/loading_animation.json'),
           );
         } else {
           if (snapshot.hasData) {
@@ -379,7 +382,7 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       );
                                     } else {
-                                      if (HomePage.isConnect) {
+                                      if (MyApp.isConnect) {
                                         setState(() {
                                           _restaurantApi = ApiService()
                                               .addReview(
@@ -396,12 +399,12 @@ class _DetailPageState extends State<DetailPage> {
                                             .showSnackBar(SnackBar(
                                           content: const Text(
                                               'Periksa koneksi internet Anda!'),
-                                          duration: const Duration(seconds: 1),
+                                          duration: const Duration(seconds: 2),
                                         ));
                                       }
                                     }
                                     print("CONNECTIVITY : " +
-                                        HomePage.isConnect.toString());
+                                        MyApp.isConnect.toString());
                                     print("SUBMIT REVIEW : " +
                                         reviewController.text);
                                   },
