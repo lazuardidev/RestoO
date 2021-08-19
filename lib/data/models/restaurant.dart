@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final restaurantApi = restaurantApiFromJson(jsonString);
-
 import 'dart:convert';
 
 RestaurantApi restaurantApiFromJson(String str) =>

@@ -30,7 +30,6 @@ class RestaurantProvider extends ChangeNotifier {
         } else {
           _state = ResultState.HasData;
           notifyListeners();
-          print("HAS DATA PROVIDER");
           return _restaurantApi = searchApi;
         }
       }

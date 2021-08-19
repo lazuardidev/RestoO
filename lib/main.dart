@@ -5,7 +5,6 @@ import 'package:restoo/data/api/api_service.dart';
 import 'package:restoo/data/models/restaurant.dart';
 import 'package:restoo/pages/detail_page.dart';
 import 'package:restoo/pages/home_page.dart';
-import 'package:restoo/pages/search_page.dart';
 import 'package:restoo/pages/welcome_page.dart';
 import 'package:restoo/provider/restaurant_provider.dart';
 
@@ -32,13 +31,12 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Resto O',
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primarySwatch: Colors.green,
             ),
             initialRoute: WelcomePage.routeName,
             routes: {
               WelcomePage.routeName: (context) => WelcomePage(),
               HomePage.routeName: (context) => HomePage(),
-              SearchPage.routeName: (context) => SearchPage(),
               DetailPage.routeName: (context) => DetailPage(
                     restaurant:
                         ModalRoute.of(context)?.settings.arguments as Restaurant,
@@ -52,13 +50,10 @@ class MyApp extends StatelessWidget {
 
   void _checkInternetConnection(ConnectivityResult connectivityResult) {
     if (connectivityResult == ConnectivityResult.mobile) {
-      print("MOBILE INTERNET CONNECTION");
       isConnect = true;
     } else if (connectivityResult == ConnectivityResult.wifi) {
-      print("WIFI INTERNET CONNECTION");
       isConnect = true;
     } else {
-      print("NO INTERNET CONNECTION");
       isConnect = false;
     }
   }
