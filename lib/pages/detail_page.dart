@@ -25,23 +25,21 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  TextEditingController reviewController = TextEditingController(text: "");
+  TextEditingController _reviewController = TextEditingController(text: "");
 
-  String address = "";
-  List<Category> category = [];
-  List<Category> foods = [];
-  List<Category> drinks = [];
-  List<CustomerReview> customerReviews = [];
+  List<Category> _category = [];
+  List<Category> _foods = [];
+  List<Category> _drinks = [];
+  List<CustomerReview> _customerReviews = [];
 
-  List<String> categoryList = [];
-  List<String> foodList = [];
-  List<String> drinkList = [];
-  List<CustomerReview> listCustomerReviews = [];
+  List<String> _categoryList = [];
+  List<String> _foodList = [];
+  List<String> _drinkList = [];
 
   @override
   void dispose() {
     super.dispose();
-    reviewController.dispose();
+    _reviewController.dispose();
   }
 
   @override
@@ -77,24 +75,24 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  getFoods(var list) {
-    foodList.clear();
+  _getFoods(var list) {
+    _foodList.clear();
     for (int i = 0; i < list.length; i++) {
-      foodList.add(list[i].name);
+      _foodList.add(list[i].name);
     }
   }
 
-  getDrinks(var list) {
-    drinkList.clear();
+  _getDrinks(var list) {
+    _drinkList.clear();
     for (int i = 0; i < list.length; i++) {
-      drinkList.add(list[i].name);
+      _drinkList.add(list[i].name);
     }
   }
 
-  getCategory(var list) {
-    categoryList.clear();
+  _getCategory(var list) {
+    _categoryList.clear();
     for (int i = 0; i < list.length; i++) {
-      categoryList.add(list[i].name);
+      _categoryList.add(list[i].name);
     }
   }
 
@@ -107,15 +105,14 @@ class _DetailPageState extends State<DetailPage> {
           );
         } else if (state.state == ResultState.HasData &&
             state.result.restaurant != null) {
-          address = state.result.restaurant!.address;
-          category = state.result.restaurant!.categories;
-          foods = state.result.restaurant!.menus.foods;
-          drinks = state.result.restaurant!.menus.drinks;
-          customerReviews = state.result.restaurant!.customerReviews;
+          _category = state.result.restaurant!.categories;
+          _foods = state.result.restaurant!.menus.foods;
+          _drinks = state.result.restaurant!.menus.drinks;
+          _customerReviews = state.result.restaurant!.customerReviews;
 
-          getCategory(category);
-          getFoods(foods);
-          getDrinks(drinks);
+          _getCategory(_category);
+          _getFoods(_foods);
+          _getDrinks(_drinks);
 
           return Stack(
             children: [
@@ -235,7 +232,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           Container(
                             child: Text(
-                              '${categoryList.join(', ')}.',
+                              '${_categoryList.join(', ')}.',
                               style: greyTextStyle,
                             ),
                           ),
@@ -248,7 +245,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           Container(
                             child: Text(
-                              '${foodList.join(', ')}.',
+                              '${_foodList.join(', ')}.',
                               style: greyTextStyle,
                             ),
                           ),
@@ -261,7 +258,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           Container(
                             child: Text(
-                              '${drinkList.join(', ')}.',
+                              '${_drinkList.join(', ')}.',
                               style: greyTextStyle,
                             ),
                           ),
@@ -276,7 +273,7 @@ class _DetailPageState extends State<DetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: 280,
+                                width: MediaQuery.of(context).size.width - 90,
                                 child: Text(
                                   '${state.result.restaurant!.city}\n${state.result.restaurant!.address}',
                                   style: greyTextStyle.copyWith(fontSize: 14),
@@ -307,7 +304,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: lightGreyColor,
                             ),
                             child: TextField(
-                              controller: reviewController,
+                              controller: _reviewController,
                               autofocus: false,
                               maxLines: 2,
                               decoration: InputDecoration(
@@ -331,7 +328,7 @@ class _DetailPageState extends State<DetailPage> {
                                   side: BorderSide(color: greenColor, width: 2),
                                 ),
                                 onPressed: () {
-                                  if (reviewController.text == "") {
+                                  if (_reviewController.text == "") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: const Text(
@@ -344,11 +341,11 @@ class _DetailPageState extends State<DetailPage> {
                                       state.addReviewRestaurantProvider(
                                           id: state.result.restaurant!.id,
                                           name: "Lazuardi",
-                                          review: reviewController.text);
+                                          review: _reviewController.text);
 
                                       state.detailRestaurantProvider(
                                           id: state.result.restaurant!.id);
-                                      reviewController.text = "";
+                                      _reviewController.text = "";
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -374,9 +371,9 @@ class _DetailPageState extends State<DetailPage> {
                           ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: customerReviews.length,
+                            itemCount: _customerReviews.length,
                             itemBuilder: (context, index) {
-                              var customerReview = customerReviews[index];
+                              var customerReview = _customerReviews[index];
                               return ReviewList(
                                 name: customerReview.name,
                                 review: customerReview.review,
@@ -393,12 +390,17 @@ class _DetailPageState extends State<DetailPage> {
             ],
           );
         } else if (state.state == ResultState.NoData) {
-          return Center(child: Image.asset('assets/vector/no_data.png'));
+          return Center(
+            child: Image.asset('assets/vector/no_data.png'),
+          );
         } else if (state.state == ResultState.Error) {
           return Center(
-              child: Image.asset('assets/vector/something_wrong.png'));
+            child: Image.asset('assets/vector/something_wrong.png'),
+          );
         } else {
-          return Center(child: Text(''));
+          return Center(
+            child: Text(''),
+          );
         }
       },
     );

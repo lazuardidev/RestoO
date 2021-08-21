@@ -97,28 +97,32 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else if (state.state == ResultState.HasData) {
                     return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.result.restaurants?.length,
-                        itemBuilder: (context, index) {
-                          var restaurant = state.result.restaurants?[index];
-                          if (restaurant != null) {
-                            return RestaurantList(
-                              context: context,
-                              restaurant: restaurant,
-                            );
-                          }
-                          return Text('');
-                        });
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.result.restaurants?.length,
+                      itemBuilder: (context, index) {
+                        var restaurant = state.result.restaurants?[index];
+                        if (restaurant != null) {
+                          return RestaurantList(
+                            context: context,
+                            restaurant: restaurant,
+                          );
+                        }
+                        return Text('');
+                      },
+                    );
                   } else if (state.state == ResultState.NoData) {
                     return Center(
-                        child: Image.asset('assets/vector/no_data.png'));
+                      child: Image.asset('assets/vector/no_data.png'),
+                    );
                   } else if (state.state == ResultState.Error) {
                     return Center(
                       child: Image.asset('assets/vector/something_wrong.png'),
                     );
                   } else {
-                    return Center(child: Text(''));
+                    return Center(
+                      child: Text(''),
+                    );
                   }
                 },
               ),
